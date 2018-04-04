@@ -1,184 +1,101 @@
-html {
-  font-size: 10px;
-
-  @media (--lg) {
-    font-size: 12px;
-  }
-
-  @media (--xl) {
-    font-size: 14px;
-  }
-}
-
-body {
-  color: var(--black);
-  font-family: var(--font-family-sans-serif);
-}
-
-.App {
-  font-size: 1.8rem;
-  padding: 2rem;
-
-  @media (--md) {
-    padding: 3rem;
-  }
-
-  @media (--lg) {
-    padding: 4rem;
-  }
-}
-
-a {
-  color: var(--grey-text);
-}
-
-a:hover {
-  color: var(--black);
-}
-
-h1,
-h2,
-h3 {
-  margin: 2rem 0;
-}
-
-h1 {
-  font-size: 2.5rem;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.7rem;
-}
-
-button {
-  background: transparent;
-  border-radius: 1.6rem;
-  border: 0.1rem solid var(--black);
-  cursor: pointer;
-  font-size: 1.5rem;
-  padding: 0.7rem 2rem;
-}
-
-button:disabled {
-  opacity: 0.3;
-}
-
-button:hover {
-  background: var(--white);
-}
-
-.Menu {
-  align-items: center;
-  border-bottom: 1px solid var(--grey-border);
+.Home {
+  /* display: grid;
+  grid-template-columns: repeat(12, 100px);
+  grid-gap: 20px; */
   display: flex;
-  justify-content: space-between;
-  padding-bottom: 2rem;
-  margin: 0 auto 2rem;
-  max-width: 60rem;
-
-  @media (--lg) {
-    margin-left: 20rem;
-    margin: 0 0 2rem 20rem;
-    padding-bottom: 0;
-  }
+  flex-direction: row;
+  font-size: 12px;
+}
+.Tickers {
+  /* grid-column: 1 / 4; */
+  width: 300px;
+  border: 1px black solid;
+  border-bottom: none;
 }
 
-.Menu img {
-  display: block;
+.Tickers .AssetLabel {
+  grid-column: 1 / 2;
 }
 
-.Menu-logo {
-  margin-right: 2rem;
-  width: 6rem;
-
-  @media (--lg) {
-    position: fixed;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    border-right: 1px solid var(--grey-border);
-    width: 20rem;
-    padding: 4rem;
-  }
+.Tickers .TickerColumn {
+  grid-column: 2 / 5;
 }
 
-.Menu-link {
-  display: inline-block;
-  font-family: var(--font-family-serif);;
-  font-style: italic;
-  margin-left: 1.5rem;
-  line-height: 3rem;
-  text-decoration: none;
-
-  @media (--md) {
-    margin-left: 3rem;
-  }
-
-  @media (--lg) {
-    margin: 0 3rem 0 0;
-    line-height: 7.5rem;
-  }
+.Ticker {
+  /* display: flex;
+  flex-direction: row; */
 }
 
-.Menu-link--active {
-  color: var(--black);
+.Ticker .TickerItem {
+  height: 16px;
+  font-size: 12px;
+  text-align: center;
 }
 
-.Page {
-  max-width: 60rem;
-  margin: 0 auto;
-
-  @media (--lg) {
-    margin: 0 0 0 20rem;
-  }
+.Ticker .asset {
+  width: 65px;
+}
+.Ticker .last {
+  width: 65px;
+  text-align: right;
+}
+.Ticker .currency {
+  width: 35px;
+  text-align: left;
+}
+.Ticker .delta {
+  width: 35px;
+}
+.Ticker .volume {
+  width: 65px;
+  text-align: right;
 }
 
-.Example {
-  background: #F6F8FA;
-  padding: 2rem;
-  border-radius: 0.4rem;
+.Trades {
+  width: 200px;
+  border: 1px solid black;
+  /* grid-column: 4 / 9; */
 }
 
-.Example .Icon {
-  margin-right: 10px;
+.Trade .timestamp{
+  text-align: left;
 }
 
-.BackgroundImgExample {
-  background-image: url(../assets/img/book1.jpg);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 16rem;
-  max-width: 25rem;
+.Trade .price {
+  text-align: center;
 }
 
-.ImgExample {
-  max-width: 25rem;
+.Trade .amount {
+  text-align: right;
 }
 
-hr {
-  border: 0;
-  border-top: 1px solid var(--grey-border);
-  margin: 2rem 0;
+.TableRow {
+}
+.TableHeaderItem {
+  display: flex;
+  flex-direction: row;
+}
+.SortArrows {
+  
+}
+.UpArrow {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+  position: relative;
+  top: -1px;
 }
 
-.People-list {
-  @media (--md) {
-    display: flex;
-    flex-wrap: wrap;
-  }
+.DownArrow {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+  position: relative;
+  bottom: -1px;
 }
 
-.People-person {
-  border-bottom: 1px solid var(--grey-border);
-  padding-bottom: 2rem;
 
-  @media (--md) {
-    flex-basis: 50%;
-    flex-shrink: 0;
-  }
-}

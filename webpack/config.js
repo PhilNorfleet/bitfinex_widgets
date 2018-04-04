@@ -67,7 +67,7 @@ if (IS_PRODUCTION) {
   // Shared development plugins
   plugins.push(
     // Enables pretty names instead of index
-    new webpack.NamedModulesPlugin()
+    new webpack.NamedModulesPlugin(),
   );
 }
 
@@ -217,6 +217,7 @@ module.exports = {
   IS_PRODUCTION,
   NODE_ENV,
   SERVER_RENDER,
+  watch: true,
   outputFiles,
   paths,
   plugins,

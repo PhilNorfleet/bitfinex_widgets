@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import app from 'reducers/app';
-import people from 'reducers/people';
+import symbols from 'reducers/symbols';
+import websocket from 'reducers/websocket';
 
 export default combineReducers({
   app,
-  people,
+  symbols,
+  websocket,
 });
