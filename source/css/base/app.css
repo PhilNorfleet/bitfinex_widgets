@@ -1,29 +1,57 @@
 .Home {
-  /* display: grid;
-  grid-template-columns: repeat(12, 100px);
-  grid-gap: 20px; */
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  grid-gap: 20px;
+  padding: 20px;
   font-size: 12px;
 }
-.Tickers {
-  /* grid-column: 1 / 4; */
-  width: 300px;
+
+.Sidebar {
+}
+
+.Main {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 0px 20px;
+}
+
+.Widget {
+  display: flex;
+  flex-direction: column;
   border: 1px black solid;
-  border-bottom: none;
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
-.Tickers .AssetLabel {
-  grid-column: 1 / 2;
+.Widget .Header {
+  display: flex;
 }
 
-.Tickers .TickerColumn {
-  grid-column: 2 / 5;
+.Widget .Body {
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.WidgetWrapper-BigTickerContainer {
+}
+
+.WidgetWrapper-TickersContainer {
+  max-height: 500px;
+}
+
+.WidgetWrapper-OrderbookContainer {
+  grid-column: span 4;
+}
+
+.WidgetWrapper-TradesContainer {
+  grid-column: span 2;
 }
 
 .Ticker {
-  /* display: flex;
-  flex-direction: row; */
+
 }
 
 .Ticker .TickerItem {
@@ -32,29 +60,27 @@
   text-align: center;
 }
 
-.Ticker .asset {
-  width: 65px;
+.highlight {
+  background: lightgray;
 }
-.Ticker .last {
-  width: 65px;
+
+.no-highlight {
+  background: white;
+}
+
+.Ticker .asset {
+  
+}
+.Ticker .price {
   text-align: right;
 }
 .Ticker .currency {
-  width: 35px;
   text-align: left;
 }
 .Ticker .delta {
-  width: 35px;
 }
 .Ticker .volume {
-  width: 65px;
   text-align: right;
-}
-
-.Trades {
-  width: 200px;
-  border: 1px solid black;
-  /* grid-column: 4 / 9; */
 }
 
 .Trade .timestamp{
@@ -71,13 +97,15 @@
 
 .TableRow {
 }
+
 .TableHeaderItem {
-  display: flex;
-  flex-direction: row;
+  display: table-cell;
 }
+
 .SortArrows {
-  
+  float: right;
 }
+
 .UpArrow {
   width: 0; 
   height: 0; 
@@ -98,4 +126,20 @@
   bottom: -1px;
 }
 
+.Orderbook {
+  display: flex;
+}
+.Asks,
+.Bids {
+  flex: 50%;
+  padding: 5px;
+}
+.Bids .price,
+.Asks .amount {
+  text-align: left;
+}
+.Bids .amount,
+.Asks .price {
+  text-align: right;
+}
 

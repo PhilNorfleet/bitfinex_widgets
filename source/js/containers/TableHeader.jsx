@@ -11,19 +11,15 @@ export default class TableHeaderContainer extends Component {
     static propTypes = {
         sortMethod: PropTypes.object,
         columns: PropTypes.array,
+        dispatch: PropTypes.func,
     }
     handleChangeSortMethod = (type, direction) => {
         const { dispatch } = this.props;
         dispatch(changeSortMethod(type, direction))
     }
     render() {
-        const {
-            sortMethod,
-            columns
-        } = this.props;
         return <TableHeader 
-            sortMethod={sortMethod}
-            handleChangeSortMethod={this.handleChangeSortMethod}
-            columns={columns}/>
+            { ...this.props }
+            handleChangeSortMethod={ this.handleChangeSortMethod }/>
     }
 }

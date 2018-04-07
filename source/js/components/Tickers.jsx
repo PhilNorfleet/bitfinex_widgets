@@ -52,10 +52,12 @@ const Tickers = ({ tickers }) => {
     }
 
     return (
-        <table className='Tickers'>
-            <TableHeader columns={columns}/>
-            {makeTickers()}
-        </table>
+        <div className='Tickers'>
+            <table>
+                <TableHeader columns={columns} sortable/>
+                {makeTickers()}
+            </table>
+        </div>
     )
 }
 

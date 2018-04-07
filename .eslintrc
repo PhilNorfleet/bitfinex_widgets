@@ -26,7 +26,6 @@ rules:
   jsx-quotes: [2, "prefer-single"]
   max-len: ["error", { "code": 120 }]
   new-cap: 0
-  indent: [2, "tab"]
   experimentalDecorators: 0
   no-plusplus: 0
   no-return-assign: 0

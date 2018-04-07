@@ -1,14 +1,14 @@
 import React from 'react';
+import Bids from 'containers/Bids';
+import Asks from 'containers/Asks';
 
-const Orderbook = ({ price, amount, timestamp }) => {
-
+const Orderbook = () => {
     return (
-        <tr className='Orderbook'>
-            <td className="OrderbookItem timestamp">{timestamp}</td>
-            <td className="OrderbookItem price">{price}</td>
-            <td className="OrderbookItem amount">{amount}</td>
-        </tr>
-    )
-}
+        <div className='Orderbook'>
+            <Bids />
+            <Asks />
+        </div>
+    );
+};
 
-export default Orderbook
+export default Orderbook;
