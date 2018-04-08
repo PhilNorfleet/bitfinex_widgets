@@ -1,6 +1,5 @@
-import { takeLatest, call, put, take, select } from 'redux-saga/effects';
-import { takeEvery, eventChannel } from 'redux-saga';
-import { bindActionCreators } from 'redux';
+import { takeLatest, call, put, take, all } from 'redux-saga/effects';
+import { eventChannel } from 'redux-saga';
 
 import * as ws from '../actions/websocket';
 import { SELECT_TICKER } from '../actions/app';
@@ -61,9 +60,9 @@ function* handleSelectTicker(action) {
 
 }
 export default function* websocketSaga() {
-  yield [
+  yield all([
     takeLatest(ws.WEBSOCKET_CONNECT, initWSChannel),
     takeLatest(ws.WEBSOCKET_SEND, sendWS),
     takeLatest(SELECT_TICKER, handleSelectTicker),
-  ];
+  ]);
 }

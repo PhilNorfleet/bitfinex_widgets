@@ -5,10 +5,12 @@ import Asks from 'components/Asks.jsx';
 
 @connect(state => ({
     asks: state.websocket.asks,
+    largestTotalValue: state.websocket.largestTotalValue,
 }))
 export default class asksContainer extends Component {
     static propTypes = {
         asks: PropTypes.object,
+        largestTotalValue: PropTypes.number,
     }
 
     render() {
@@ -16,7 +18,7 @@ export default class asksContainer extends Component {
             asks
         } = this.props;
         if (asks) {
-            return <Asks asks={asks} key='asks' />;
+            return <Asks { ...this.props } key='asks' />;
         }
         return (
             <div> LOADING </div>

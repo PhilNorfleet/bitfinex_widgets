@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { clone, findIndex, uniqBy, orderBy, keys } from 'lodash';
 import {
   WEBSOCKET_CONNECT,
   WEBSOCKET_SEND,
@@ -16,17 +16,18 @@ const initialState = {
   tradesChanId: null,
   bids: {},
   asks: {},
+  largestTotalValue: 0,
   bookChanId: null,
 };
 
 const actionsMap = {
-  [WEBSOCKET_CONNECT]: (state, action) => {
+  [WEBSOCKET_CONNECT]: (state) => {
     return {
       ...state,
       connecting: true,
     };
   },
-  [WEBSOCKET_OPEN]: (state, action) => {
+  [WEBSOCKET_OPEN]: (state) => {
     return {
       ...state,
       connecting: false,
@@ -46,6 +47,7 @@ const actionsMap = {
       newState.bids = {};
       newState.asks = {};
       newState.bookChanId = chanId;
+      newState.largestTotalValue = 0;
     }
     newState.chanIds = chanIds;
     return {
@@ -67,7 +69,7 @@ const actionsMap = {
     let parsedNewData = {};
 
     if (channel === 'ticker') {
-      const newTickers = _.clone(newState.tickers);
+      const newTickers = clone(newState.tickers);
       const [
         bid, bidSize, ask, askSize,
         dailyChange, dailyChangePerc, lastPrice,
@@ -88,7 +90,7 @@ const actionsMap = {
         high,
         low,
       };
-      const index = _.findIndex(newTickers, { symbol });
+      const index = findIndex(newTickers, { symbol });
       if (index >= 0) {
         newTickers[index] = parsedNewData;
       } else {
@@ -104,7 +106,7 @@ const actionsMap = {
         price: newData[2],
       };
       newTrades.unshift(parsedNewData);
-      newTrades = _.uniqBy(newTrades, 'timestamp');
+      newTrades = uniqBy(newTrades, 'timestamp');
       if (newTrades.length > 25) {
         newTrades.pop();
       }
@@ -116,9 +118,9 @@ const actionsMap = {
       if (typeof price !== 'number') return { ...newState };
       if (count > 0) {
         if (amount > 0) {
-          newBids[price] = amount;
+          newBids[price] = { amount, count };
         } else if (amount < 0) {
-          newAsks[price] = -amount;
+          newAsks[price] = { amount: -amount, count };
         }
       } else if (count === 0) {
         if (amount === 1) {
@@ -127,8 +129,15 @@ const actionsMap = {
           delete newAsks[price];
         }
       }
+      const bidsValue = keys(newBids).reduce((a, x) => {
+        return a + (+x * newBids[x].amount);
+      }, 0);
+      const asksValue = keys(newAsks).reduce((a, x) => {
+        return a + (+x * newAsks[x].amount);
+      }, 0);
       newState.bids = newBids;
       newState.asks = newAsks;
+      newState.largestTotalValue = Math.max(bidsValue, asksValue);
     }
     return {
       ...newState,

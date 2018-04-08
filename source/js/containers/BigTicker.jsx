@@ -39,7 +39,7 @@ export class BigTickerContainer extends Component {
                 } = bigTicker;
                 return (
                     <BigTicker
-                        symbol={ symbol }
+                        symbol={ bigTickerSymbol }
                         lastPrice={ format(lastPrice, 8, 8) }
                         volume={ format(volume.toFixed(0), 8, 8) }
                         dailyChange={ format(dailyChange, 8, 8) }

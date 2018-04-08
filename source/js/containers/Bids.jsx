@@ -5,18 +5,20 @@ import Bids from 'components/Bids.jsx';
 
 @connect(state => ({
   bids: state.websocket.bids,
+  largestTotalValue: state.websocket.largestTotalValue,
 }))
 export default class BidsContainer extends Component {
   static propTypes = {
     bids: PropTypes.object,
+    largestTotalValue: PropTypes.number,
   }
 
   render() {
     const {
-      bids
+      bids,
     } = this.props;
     if (bids) {
-      return <Bids bids={ bids } key='bids' />;
+      return <Bids { ...this.props } key='bids' />;
     }
     return (
       <div> LOADING </div>

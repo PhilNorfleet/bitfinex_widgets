@@ -134,12 +134,18 @@ table {
   flex: 50%;
   padding: 5px;
 }
-.Bids .price,
-.Asks .amount {
+
+.Asks .price,
+.Bids .amount,
+.Bids .count {
   text-align: left;
 }
-.Bids .amount,
-.Asks .price {
+
+.Asks .count,
+.Asks .amount,
+.Bids .price {
   text-align: right;
 }
+
+
 

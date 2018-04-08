@@ -43,7 +43,11 @@ const Tickers = ({ tickers }) => {
 
             body.push(row)
             if (last) {
-                rows.push(<tbody>{body}</tbody>);
+                rows.push(
+                    <tbody key={i}>
+                        {body}
+                    </tbody>
+                );
                 body = [];
                 rowCount = 1;
             }
@@ -54,7 +58,7 @@ const Tickers = ({ tickers }) => {
     return (
         <div className='Tickers'>
             <table>
-                <TableHeader columns={columns} sortable/>
+                <TableHeader columns={columns} sortable parent='Tickers' />
                 {makeTickers()}
             </table>
         </div>
