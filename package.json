@@ -66,6 +66,7 @@
     "isomorphic-fetch": "^2.2.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "react-cryptocoins": "^1.0.11",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0-beta.12",
     "react-redux": "^5.0.6",

@@ -93,6 +93,9 @@ const rules = [
       {
         loader: 'react-svg-loader',
         options: {
+          query: {
+            jsx: true,
+          },
           svgo: {
             plugins: [
               {

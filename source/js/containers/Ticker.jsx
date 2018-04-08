@@ -5,6 +5,7 @@ import Ticker from 'components/Ticker.jsx';;
 import { selectTicker, mouseEnterTicker, mouseLeaveTicker } from 'actions/app';
 import format from 'utils/formatNumber';
 
+
 @connect(state => ({
     tradesChanId: state.websocket.tradesChanId,
     bookChanId: state.websocket.bookChanId,
@@ -47,16 +48,18 @@ export default class TickerContainer extends Component {
         const {
             rowCount,
             first,
-            ticker
+            ticker,
         } = this.props;
+        const iconName = ticker.asset.charAt(0) + ticker.asset.slice(1).toLowerCase();
         return (
             <Ticker 
                 rowCount={ rowCount }
                 first={ first }
+                iconName={ iconName }
                 asset={ ticker.asset }
                 currency={ ticker.currency }
                 price={ format(ticker.lastPrice, 6, 8) + ticker.currency }
-                delta={ format(100 * ticker.dailyChangePerc, 3, 4) }
+                delta={ format(100 * ticker.dailyChangePerc, 3, 4, 2) }
                 volume={ format(ticker.volume.toFixed(0), 10, 10) }
                 mousedOver={ this.state.mousedOver }
                 onSelectTicker={ this.onSelectTicker }

@@ -1,6 +1,7 @@
 import React from 'react';
 import TableHeader from 'containers/TableHeader';
 import { orderBy } from 'lodash';
+import { format } from 'utils/formatNumber';
 
 const columns = [
   {
@@ -36,9 +37,9 @@ const Asks = ({ asks, largestTotalValue }) => {
       };
       return (
         <tr className='OrderbookRow-Bid' key={ask} style={ style }>
-          <td className='price'>{ask}</td>
-          <td className='totalAmount'>{totalAmount.toFixed(2)}</td>
-          <td className='amount'>{amount.toFixed(5)}</td>
+          <td className='price'>{format(ask, 8, 8, 1)}</td>
+          <td className='totalAmount'>{format(totalAmount, 5, 2)}</td>
+          <td className='amount'>{format(amount, 5, 5, 1)}</td>
           <td className='count'>{count}</td>
         </tr>
       )

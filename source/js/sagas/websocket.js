@@ -1,4 +1,4 @@
-import { takeLatest, call, put, take, all } from 'redux-saga/effects';
+import { takeLatest, call, put, take, all, throttle } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import * as ws from '../actions/websocket';
@@ -52,7 +52,6 @@ function* sendWS(action) {
 
 function* handleSelectTicker(action) {
   const websocket = window.websocket;
-  console.log(action);
   yield call(send, websocket, ws.websocketUnsubscribe(action.payload.tradesChanId));
   yield call(send, websocket, ws.websocketSubscribe('trades', action.payload.symbol));
   yield call(send, websocket, ws.websocketUnsubscribe(action.payload.bookChanId));

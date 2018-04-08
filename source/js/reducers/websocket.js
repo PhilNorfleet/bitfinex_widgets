@@ -100,10 +100,12 @@ const actionsMap = {
       // snapshot
       if (data[1].length > 10) {
         tradeData = data[1];
+        newTrades = new Array();
       } else if (data[2]) {
         tradeData = [data[2]];
       }
-      tradeData.forEach(trade => {
+      const t = 'timestamp';
+      sortBy(tradeData, t).map(trade => {
         const [
           timestamp,
           amount,
@@ -111,9 +113,7 @@ const actionsMap = {
          ] = trade.slice(-3);
         newTrades.unshift({ timestamp, amount, price });
       })
-      const t = 'timestamp';
-      newTrades = uniqBy(newTrades, t).slice(-25).reverse();
-      newState.trades = newTrades;
+      newState.trades = uniqBy(newTrades, t).slice(0, 25);
     } else if (channel === 'book') {
       let newBids = { ...newState.bids };
       let newAsks = { ...newState.asks };
