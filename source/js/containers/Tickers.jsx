@@ -40,4 +40,10 @@ export class TickersContainer extends Component {
         }
     }
 }
-export default Widget(TickersContainer, { header: true, collapsable: true });
+const widgetOptions = {
+    header: true,
+    collapsable: true,
+    name: 'Tickers',
+    showSymbol: false,
+};
+export default Widget(TickersContainer, widgetOptions);

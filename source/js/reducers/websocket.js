@@ -1,4 +1,4 @@
-import { clone, findIndex, uniqBy, orderBy, keys } from 'lodash';
+import { clone, findIndex, uniqBy, sortBy, keys } from 'lodash';
 import {
   WEBSOCKET_CONNECT,
   WEBSOCKET_SEND,
@@ -65,9 +65,6 @@ const actionsMap = {
     const channel = chanIds[chanId].channel;
     const symbol = chanIds[chanId].symbol;
 
-    let newData;
-    let parsedNewData = {};
-
     if (channel === 'ticker') {
       const newTickers = clone(newState.tickers);
       const [
@@ -75,7 +72,7 @@ const actionsMap = {
         dailyChange, dailyChangePerc, lastPrice,
         volume, high, low,
       ] = data[1];
-      parsedNewData = {
+      const parsedNewData = {
         symbol,
         asset: symbol.slice(1, 4),
         currency: symbol.slice(4),
@@ -97,38 +94,55 @@ const actionsMap = {
         newTickers.push(parsedNewData);
       }
       newState.tickers = newTickers;
-    } else if (channel === 'trades' && data[2]) {
+    } else if (channel === 'trades') {
+      let tradeData;
       let newTrades = newState.trades;
-      newData = data[2].slice(-3);
-      parsedNewData = {
-        timestamp: newData[0],
-        amount: newData[1],
-        price: newData[2],
-      };
-      newTrades.unshift(parsedNewData);
-      newTrades = uniqBy(newTrades, 'timestamp');
-      if (newTrades.length > 25) {
-        newTrades.pop();
+      // snapshot
+      if (data[1].length > 10) {
+        tradeData = data[1];
+      } else if (data[2]) {
+        tradeData = [data[2]];
       }
+      tradeData.forEach(trade => {
+        const [
+          timestamp,
+          amount,
+          price,
+         ] = trade.slice(-3);
+        newTrades.unshift({ timestamp, amount, price });
+      })
+      const t = 'timestamp';
+      newTrades = uniqBy(newTrades, t).slice(-25).reverse();
       newState.trades = newTrades;
     } else if (channel === 'book') {
-      const newBids = { ...newState.bids };
-      const newAsks = { ...newState.asks };
-      const [price, count, amount] = data[1];
-      if (typeof price !== 'number') return { ...newState };
-      if (count > 0) {
-        if (amount > 0) {
-          newBids[price] = { amount, count };
-        } else if (amount < 0) {
-          newAsks[price] = { amount: -amount, count };
-        }
-      } else if (count === 0) {
-        if (amount === 1) {
-          delete newBids[price];
-        } else if (amount === -1) {
-          delete newAsks[price];
-        }
+      let newBids = { ...newState.bids };
+      let newAsks = { ...newState.asks };
+      let newOrders;
+      if (data[1].length > 3) {
+        // snapshot
+        newBids = {};
+        newAsks = {};
+        newOrders = data[1];
+      } else if (data[1].length === 3) {
+        newOrders = [data[1]];
       }
+      newOrders.forEach(order => {
+        const [price, count, amount] = order;
+        if (typeof price !== 'number') return { ...newState };
+        if (count > 0) {
+          if (amount > 0) {
+            newBids[price] = { amount, count };
+          } else if (amount < 0) {
+            newAsks[price] = { amount: -amount, count };
+          }
+        } else if (count === 0) {
+          if (amount === 1) {
+            delete newBids[price];
+          } else if (amount === -1) {
+            delete newAsks[price];
+          }
+        }
+      });
       const bidsValue = keys(newBids).reduce((a, x) => {
         return a + (+x * newBids[x].amount);
       }, 0);
