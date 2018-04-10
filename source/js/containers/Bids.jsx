@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Bids from 'components/Bids.jsx';
 
 @connect(state => ({
-  bids: state.websocket.bids,
-  largestTotalValue: state.websocket.largestTotalValue,
+  bids: state.book.bids,
+  largestTotalValue: state.book.largestTotalValue,
 }))
 export default class BidsContainer extends Component {
   static propTypes = {

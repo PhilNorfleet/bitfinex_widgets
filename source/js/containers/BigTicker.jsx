@@ -7,51 +7,50 @@ import Widget from 'components/widget';
 import { findIndex } from 'lodash';
 
 @connect(state => ({
-    tickers: state.websocket.tickers,
-    mousedOverSymbol: state.app.mousedOverSymbol,
-    symbol: state.app.symbol,
+  tickers: state.tickers,
+  mousedOverSymbol: state.app.mousedOverSymbol,
+  symbol: state.app.symbol,
 }))
 export class BigTickerContainer extends Component {
-    static propTypes = {
-        tickers: PropTypes.array,
-        symbol: PropTypes.string,
-        mousedOverSymbol: PropTypes.string,
-    }
-    render() {
+  static propTypes = {
+    tickers: PropTypes.object,
+    symbol: PropTypes.string,
+    mousedOverSymbol: PropTypes.string,
+  }
+  render() {
+    const {
+      tickers,
+      symbol,
+      mousedOverSymbol,
+    } = this.props;
+    if (tickers) {
+      const bigTickerSymbol = mousedOverSymbol || symbol;
+      const bigTicker = tickers[bigTickerSymbol];
+      if (bigTicker) {
         const {
-            tickers,
-            symbol,
-            mousedOverSymbol,
-        } = this.props;
-        if (tickers) {
-            const bigTickerSymbol = mousedOverSymbol || symbol;
-            const bigTicker = tickers[
-                findIndex(tickers, { symbol: `t${ bigTickerSymbol }` })
-            ];
-            if (bigTicker) {
-                const {
-                    lastPrice,
-                    volume,
-                    dailyChange,
-                    dailyChangePerc,
-                    low,
-                    high,
-                } = bigTicker;
-                return (
-                    <BigTicker
-                        symbol={ bigTickerSymbol }
-                        lastPrice={ format(lastPrice, 8, 8) }
-                        volume={ format(volume.toFixed(0), 8, 8) }
-                        dailyChange={ format(dailyChange, 8, 8) }
-                        dailyChangePerc={ format(100 * dailyChangePerc, 3, 4) }
-                        low={ format(low, 8, 8) }
-                        high={ format(high, 8, 8) } />
-                )
-            }
-        } 
+          lastPrice,
+          volume,
+          dailyChange,
+          dailyChangePerc,
+          low,
+          high,
+        } = bigTicker;
         return (
-            <div> LOADING </div>
+          <BigTicker
+            symbol={ bigTickerSymbol }
+            lastPrice={ format(lastPrice, 8, 8) }
+            volume={ format(volume.toFixed(0), 8, 8) }
+            dailyChange={ format(dailyChange, 8, 8) }
+            dailyChangePerc={ format(100 * dailyChangePerc, 3, 4) }
+            low={ format(low, 8, 8) }
+            high={ format(high, 8, 8) } 
+          />
         );
+      }
     }
+    return (
+      <div> LOADING </div>
+    );
+  }
 }
 export default Widget(BigTickerContainer, { header: false });

@@ -1,31 +1,46 @@
-import _ from 'lodash';
+import { findIndex } from 'lodash';
 import {
-    TICKER_RECEIVED,
+  TICKERS_RECEIVED,
 } from 'actions/tickers';
 
-const initialState = {
-    chanIds: {},
-    tickers: [],
-};
+const initialState = {};
 
 const actionsMap = {
-    [TICKER_RECEIVED]: (state, action) => {
-        let newState = _.clone(state);
-        const data = action.payload;
-        chanIds[chanId] = { channel, symbol };
-        if (channel === 'trades') {
-            tradesChanId = chanId;
-        }
-        newState.chanIds = chanIds;
-        newState.tradesChanId = tradesChanId;
-        return {
-            ...state,
-            ...newState,
-        };
-    },
-}
+  [TICKERS_RECEIVED]: (state, action) => {
+    const newState = { ...state };
+    const { tickers } = action.payload;
+    tickers.forEach(ticker => {
+      const symbol = ticker.pop();
+      const [
+        bid, bidSize, ask, askSize,
+        dailyChange, dailyChangePerc, lastPrice,
+        volume, high, low,
+      ] = ticker;
+      const parsedNewTicker = {
+        symbol: symbol.slice(1),
+        asset: symbol.slice(1, 4),
+        currency: symbol.slice(4),
+        bid,
+        bidSize,
+        ask,
+        askSize,
+        dailyChange,
+        dailyChangePerc,
+        lastPrice,
+        volume,
+        high,
+        low,
+      };
+      newState[symbol.slice(1)] = parsedNewTicker;
+    });
+    return {
+      ...state,
+      ...newState,
+    };
+  },
+};
 
 export default function reducer(state = initialState, action = {}) {
-    const fn = actionsMap[action.type];
-    return fn ? fn(state, action) : state;
+  const fn = actionsMap[action.type];
+  return fn ? fn(state, action) : state;
 }

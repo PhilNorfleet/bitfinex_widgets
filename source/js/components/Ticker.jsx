@@ -1,5 +1,12 @@
 import React from 'react';
-import * as Icons from 'react-cryptocoins';
+// import * as icons from '/assets/img/svg/white';
+// import * as Icons from 'assets/img/svg/icon';
+// const svgs = require.context('../../assets/img/svg/white', true, /\.svg$/)
+// const Icons = svgs.keys()
+//   .reduce((images, key) => {
+//     images[key] = svgs(key)
+//     return images
+//   }, {});
 
 const Ticker = ({ 
   iconName,
@@ -16,7 +23,6 @@ const Ticker = ({
   onMouseLeaveTicker, }) => {
   const highlight = mousedOver ? 'highlight' : '';
   const highlightAsset = first && rowCount === 1 ? highlight : 'no-highlight';
-  const Icon = Icons[iconName];
   return (
     <tr
       className={ `Ticker ${ highlight }` }
@@ -29,7 +35,7 @@ const Ticker = ({
           className={ `TickerItem ${ highlightAsset }` }
           rowSpan={ rowCount }
         >
-          { Icon && <Icon className='Icon' color='grey' height='15px'/> }
+          
           { asset }
         </td>
       }

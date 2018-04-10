@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Asks from 'components/Asks.jsx';
 
 @connect(state => ({
-    asks: state.websocket.asks,
-    largestTotalValue: state.websocket.largestTotalValue,
+    asks: state.book.asks,
+    largestTotalValue: state.book.largestTotalValue,
 }))
 export default class asksContainer extends Component {
     static propTypes = {

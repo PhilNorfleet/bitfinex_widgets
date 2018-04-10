@@ -1,8 +1,20 @@
-export const TICKER_RECEIVED = 'TICKER_RECEIVED';
+export const TICKERS_SUBSCRIBED = 'TICKERS_SUBSCRIBED';
+export const TICKERS_UNSUBSCRIBED = 'TICKERS_UNSUBSCRIBED';
+export const TICKERS_RECEIVED = 'TICKERS_RECEIVED';
 
-export const tickerReceived = (channel, ticker) => ({
-    type: TICKER_RECEIVED,
+export const tickersSubscribed = (msg) => ({
+    type: TICKERS_SUBSCRIBED,
+    payload: msg,
+});
+
+export const tickersUnsubscribed = (msg) => ({
+    type: TICKERS_UNSUBSCRIBED,
+    payload: msg,
+});
+
+export const tickersReceived = (tickers) => ({
+    type: TICKERS_RECEIVED,
     payload: {
-        channel,
-        ticker
+        tickers,
+    }
 });

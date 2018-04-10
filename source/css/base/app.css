@@ -1,8 +1,25 @@
+:root {
+  --bgColor: black;
+  --textColor: white;
+  --borderColor: white;
+  --accent: rgb(45, 45, 45);
+}
+.App {
+  background-color: var(--bgColor);
+  color: var(--textColor);
+  min-height: 100vh;
+  display: flex;
+  flex-drection: column;
+}
+.Page {
+  flex: 1;
+}
 .Home {
+  height: 100%;
   display: grid;
   grid-template-columns: 350px 1fr;
-  grid-gap: 20px;
-  padding: 20px;
+  grid-gap: 10px;
+  padding: 10px;
   font-size: 12px;
 }
 
@@ -12,29 +29,13 @@
 }
 
 .Main {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 0px 20px;
+
 }
 
-.Widget {
-  display: flex;
-  flex-direction: column;
-  border: 1px black solid;
+[class^='WidgetWrapper'] {
   padding: 10px;
-  margin-bottom: 20px;
-}
-
-.Widget .Header {
-  display: flex;
-}
-
-.Widget .Body {
-  overflow-y: auto;
-}
-
-table {
-  width: 100%;
+  border: 1px var(--borderColor) solid;
+  margin-bottom: 10px;
 }
 
 .WidgetWrapper-BigTickerContainer {
@@ -45,15 +46,58 @@ table {
 }
 
 .WidgetWrapper-OrderbookContainer {
-  grid-column: span 4;
+  float: left;
+  width: 66%;
+  min-width: 350px;
 }
 
 .WidgetWrapper-TradesContainer {
-  grid-column: span 2;
+  float: right;
+  width: 33%;
+  min-width: 200px;
+}
+
+.Widget {
+  display: flex;
+  flex-direction: column;
+}
+
+.Widget .Header {
+  display: flex;
+}
+
+.Widget .Header .symbol {
+  border-left: 1px var(--borderColor) solid;
+  margin-left: 10px;
+  padding-left: 10px; 
+}
+.Widget .HeaderItem {
+  /* border-bottom: 1px var(--borderColor) solid; */
+}
+.Widget .Body {
+  overflow-y: auto;
+  border-top: 1px var(--borderColor) solid;
+}
+
+
+table {
+  width: 100%;
+}
+
+.highlight {
+  background: var(--accent);
+}
+
+.no-highlight {
+  background: var(--bgColor);
 }
 
 .Tickers {
   max-height: 325px;
+}
+
+.TickerUnit {
+  border-bottom: 1px var(--borderColor) solid;
 }
 
 .Ticker .TickerItem {
@@ -62,13 +106,7 @@ table {
   text-align: center;
 }
 
-.highlight {
-  background: lightgray;
-}
 
-.no-highlight {
-  background: white;
-}
 
 .Ticker .asset {
   
@@ -100,12 +138,20 @@ table {
 .TableRow {
 }
 
-.TableHeaderItem {
+.TableCell {
   display: table-cell;
 }
 
+.TableCell .Title {
+  display: flex;
+}
+
+.TableCell .Title .Label {
+  flex: 1 1;
+}
+
 .SortArrows {
-  float: right;
+  float: 0 1;
 }
 
 .UpArrow {
@@ -113,7 +159,7 @@ table {
   height: 0; 
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid black;
+  border-bottom: 5px solid var(--textColor);
   position: relative;
   top: -1px;
 }
@@ -123,9 +169,13 @@ table {
   height: 0; 
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid black;
+  border-top: 5px solid var(--textColor);
   position: relative;
   bottom: -1px;
+}
+
+.SortArrows highlighted {
+  box-shadow: 0px 0px 5px var(--textColor);
 }
 
 .Orderbook {
@@ -148,6 +198,4 @@ table {
 .Bids .price {
   text-align: right;
 }
-
-
 

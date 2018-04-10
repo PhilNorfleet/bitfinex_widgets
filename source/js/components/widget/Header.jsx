@@ -16,8 +16,12 @@ export default class Header extends React.Component {
     const { onClick, name, symbol, showSymbol } = this.props;
     return (
       <div className='Header' onClick={ this.props.onClick } >
-        <div className='name'>{ name }</div>
-        { showSymbol && <div className='symbol'>{ symbol }</div> }
+        <div className='HeaderItem name'>{ name }</div>
+        { showSymbol && 
+          <div className='HeaderItem symbol'>
+            { symbol }
+          </div>
+        }
       </div>
     );
   }

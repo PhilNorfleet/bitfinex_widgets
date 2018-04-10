@@ -5,6 +5,7 @@ export const WEBSOCKET_OPEN = 'WEBSOCKET_OPEN';
 export const WEBSOCKET_CLOSE = 'WEBSOCKET_CLOSE';
 export const WEBSOCKET_SEND = 'WEBSOCKET_SEND';
 export const WEBSOCKET_SUBSCRIBED = 'WEBSOCKET_SUBSCRIBED';
+export const WEBSOCKET_UNSUBSCRIBED = 'WEBSOCKET_UNSUBSCRIBED';
 
 export const websocketConnect = () => ({ type: WEBSOCKET_CONNECT });
 export const websocketOpen = () => ({ type: WEBSOCKET_OPEN });
@@ -14,13 +15,20 @@ export const websocketError = (err) => ({
     type: WEBSOCKET_ERROR,
     payload: err,
 });
+
 export const websocketMessage = (msg) => ({ 
     type: WEBSOCKET_MESSAGE,
-    payload: JSON.parse(msg.data),
+    payload: msg,
 });
+
 export const websocketSubscribed = (msg) => ({ 
     type: WEBSOCKET_SUBSCRIBED,
-    payload: JSON.parse(msg.data),
+    payload: msg,
+});
+
+export const websocketUnsubscribed = (msg) => ({
+    type: WEBSOCKET_UNSUBSCRIBED,
+    payload: msg,
 });
 
 export const websocketSubscribe = (channel, symbol) => {
@@ -31,7 +39,7 @@ export const websocketSubscribe = (channel, symbol) => {
     }
     return {
         type: WEBSOCKET_SEND,
-        payload: { msg }
+        payload: { msg },
     };
 }
 

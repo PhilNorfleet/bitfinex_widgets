@@ -7,9 +7,9 @@ const TableHeader = ({ columns, sortable, handleChangeSortMethod, parent }) => {
         { columns && 
           columns.map(column => {
             return (
-              <th className={`TableHeaderItem ${column.key}`} key={ parent + column.key }>
-                <div>
-                  <div className='Title'>
+              <th className='TableCell' key={ parent + column.key }>
+                <div className={`Title ${ column.key }`}>
+                  <div className='Label'>
                     {column.name}
                   </div>
                   {sortable &&

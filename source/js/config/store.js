@@ -18,7 +18,7 @@ export default () => {
   if (IS_PRODUCTION) {
     middleware = applyMiddleware(sagaMiddleware);
   } else {
-    middleware = applyMiddleware(sagaMiddleware, logger);
+    middleware = applyMiddleware(sagaMiddleware,);
     if (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__) { // eslint-disable-line
       middleware = compose(
         middleware,

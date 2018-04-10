@@ -33,13 +33,13 @@ const Bids = ({ bids, largestTotalValue }) => {
       const perc = 100 * (totalValue / largestTotalValue);
       const color = 'rgba(0, 256, 0, 0.25)';
       const style = {
-        background: `linear-gradient(270deg, ${ color } ${ perc }%, white ${ 0 }%)`,
+        background: `linear-gradient(270deg, ${ color } ${ perc }%, transparent ${ 0 }%)`,
       };
       return (
         <tr className='OrderbookRow-Bid' key={ bid } style={ style }>
           <td className='count'>{count}</td>
           <td className='amount'>{format(amount, 5, 5, 1)}</td>
-          <td className='totalAmount'>{format(totalAmount, 5, 2,1)}</td>
+          <td className='totalAmount'>{format(totalAmount, 5, 5, 1)}</td>
           <td className='price'>{format(bid, 8, 8, 1)}</td>
         </tr>
       );

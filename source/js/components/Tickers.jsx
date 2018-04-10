@@ -33,7 +33,9 @@ const Tickers = ({ tickers }) => {
             const first = lastAsset !== thisAsset;
             const last = nextAsset !== thisAsset;
             if (first && !last) {
-                rowCount = takeWhile(tickers.slice(i), (t) => {thisAsset === t.asset}).length;
+                rowCount = takeWhile(tickers.slice(i), (t) => {
+                    return thisAsset === t.asset;
+                }).length;
             }
             const row = <Ticker 
                 first={ first }
@@ -44,7 +46,7 @@ const Tickers = ({ tickers }) => {
             body.push(row)
             if (last) {
                 rows.push(
-                    <tbody key={i}>
+                    <tbody className='TickerUnit' key={i}>
                         {body}
                     </tbody>
                 );

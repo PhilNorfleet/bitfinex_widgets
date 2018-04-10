@@ -5,7 +5,7 @@ import Trades from 'components/Trades.jsx';
 import Widget from 'components/widget';
 
 @connect(state => ({
-  trades: state.websocket.trades,
+  trades: state.trades.trades,
 }))
 export class TradesContainer extends Component {
   static propTypes = {
@@ -27,7 +27,7 @@ export class TradesContainer extends Component {
 const widgetOptions = { 
   header: true,
   collapsable: true,
-  name: 'Trades',
+  name: 'TRADES',
   showSymbol: true,
 };
 export default Widget(TradesContainer, widgetOptions);

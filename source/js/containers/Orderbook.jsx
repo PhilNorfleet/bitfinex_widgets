@@ -14,7 +14,7 @@ export class OrderbookContainer extends Component {
 const widgetOptions = {
     header: true,
     collapsable: true,
-    name: 'Orderbook',
+    name: 'ORDERBOOK',
     showSymbol: true,
 };
 export default Widget(OrderbookContainer, widgetOptions);

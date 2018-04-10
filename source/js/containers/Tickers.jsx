@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { orderBy } from 'lodash';
 import Tickers from 'components/Tickers';
 import BigTicker from 'components/BigTicker';
 import Widget from 'components/widget';
@@ -8,21 +9,21 @@ import Widget from 'components/widget';
 @connect(state => ({
     loading: state.symbols.loading,
     error: state.symbols.error,
-    tickers: state.websocket.tickers,
+    tickers: state.tickers,
     sortMethod: state.app.sortMethod,
     mousedOverSymbol: state.app.mousedOverSymbol,
     symbol: state.app.symbol,
 }))
 export class TickersContainer extends Component {
     static propTypes = {
-        tickers: PropTypes.array,
+        tickers: PropTypes.object,
         sortMethod: PropTypes.object,
         symbol: PropTypes.string,
     }
     sort(tickers) {
         const { sortMethod } = this.props;
-        if (!sortMethod) return tickers;
-        const sorted = _.orderBy(tickers, [sortMethod.type], [sortMethod.direction]);
+        const method = sortMethod || { type:'symbol', direction: 'desc' };
+        const sorted = orderBy(tickers, [method.type], [method.direction]);
         return sorted;
     }
     render() {
@@ -43,7 +44,7 @@ export class TickersContainer extends Component {
 const widgetOptions = {
     header: true,
     collapsable: true,
-    name: 'Tickers',
+    name: 'TICKERS',
     showSymbol: false,
 };
 export default Widget(TickersContainer, widgetOptions);
