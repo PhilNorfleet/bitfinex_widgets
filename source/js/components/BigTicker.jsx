@@ -9,6 +9,8 @@ const BigTicker = ({
     low,
     high, 
 }) => {
+    const percColor = dailyChangePerc > 0 ? 'rgb(var(--upColor))' : 
+        'rgb(var(--downColor))';
     return (
         <div className='BigTicker'>
             <table>
@@ -20,7 +22,10 @@ const BigTicker = ({
                     <tr>
                         <td className='BigTickerItem volume'>{volume}</td>
                         <td className='BigTickerItem delta'>
-                            { dailyChange + ' ' + (dailyChangePerc) }
+                            <span>{ dailyChange }</span>
+                            <span style={{ color: percColor }}>
+                                { dailyChangePerc }
+                            </span>
                         </td>
                     </tr>
                     <tr>

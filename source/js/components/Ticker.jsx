@@ -1,4 +1,7 @@
 import React from 'react';
+import TickerPrice from './format/TickerPrice';
+import PercentChange from './format/PercentChange';
+import styled from 'styled-components';
 // import * as icons from '/assets/img/svg/white';
 // import * as Icons from 'assets/img/svg/icon';
 // const svgs = require.context('../../assets/img/svg/white', true, /\.svg$/)
@@ -7,10 +10,18 @@ import React from 'react';
 //     images[key] = svgs(key)
 //     return images
 //   }, {});
+const TickerCell = styled.td`
+  
+`;
+const Currency = styled.div`
+  float: right;
+  margin-left: 5px;
+`;
 
 const Ticker = ({ 
   iconName,
   price,
+  direction,
   asset,
   currency,
   delta,
@@ -31,17 +42,20 @@ const Ticker = ({
       onMouseLeave={ () => onMouseLeaveTicker(asset + currency) }
     >
       { first &&
-        <td
-          className={ `TickerItem ${ highlightAsset }` }
+        <TickerCell
+          className={ highlightAsset }
           rowSpan={ rowCount }
         >
           
           { asset }
-        </td>
+        </TickerCell>
       }
-      <td className='TickerItem price'>{ price }</td>
-      <td className='TickerItem delta'>{ delta }</td>
-      <td className='TickerItem volume'>{ volume }</td>
+      <TickerCell className='price'>
+        <TickerPrice price={ price } direction={ direction } />
+        <Currency>{ currency }</Currency>
+      </TickerCell>
+      <TickerCell className='delta'><PercentChange perc={ delta } /></TickerCell>
+      <TickerCell className='volume'>{ volume }</TickerCell>
     </tr>
   )
 }

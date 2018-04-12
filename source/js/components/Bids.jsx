@@ -1,5 +1,5 @@
 import React from 'react';
-import TableHeader from 'containers/TableHeader';
+import Table from 'components/table/Table';
 import { orderBy } from 'lodash';
 import { format } from 'utils/formatNumber';
 
@@ -31,27 +31,32 @@ const Bids = ({ bids, largestTotalValue }) => {
       totalAmount += amount;
       totalValue += (amount * +bid);
       const perc = 100 * (totalValue / largestTotalValue);
-      const color = 'rgba(0, 256, 0, 0.25)';
+      const color = 'rgba(var(--upColor), 0.25)';
       const style = {
         background: `linear-gradient(270deg, ${ color } ${ perc }%, transparent ${ 0 }%)`,
       };
+      const formatOpts = {
+        price: { precision: 6 },
+        totalAmount: { precision: 5, max: 5, minDecimals: 1 },
+        amount: { precision: 5, max: 5, minDecimals: 1 },
+      }
       return (
         <tr className='OrderbookRow-Bid' key={ bid } style={ style }>
           <td className='count'>{count}</td>
-          <td className='amount'>{format(amount, 5, 5, 1)}</td>
-          <td className='totalAmount'>{format(totalAmount, 5, 5, 1)}</td>
-          <td className='price'>{format(bid, 8, 8, 1)}</td>
+          <td className='amount'>{format(amount, formatOpts.amount)}</td>
+          <td className='totalAmount'>{format(totalAmount, formatOpts.totalAmount)}</td>
+          <td className='price'>{format(bid, formatOpts.price)}</td>
         </tr>
       );
     });
   };
   return (
-    <table className='Bids' >
-      <TableHeader columns={ columns } parent='Bids' />
-      <tbody>
-        { makeRows() }
-      </tbody>
-    </table>
+    <Table
+      columns={columns}
+      makeRows={ makeRows }
+      data={ bids }
+      parent='Bids'
+    />
   );
 };
 

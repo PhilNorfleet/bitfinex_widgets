@@ -4,6 +4,9 @@ extends:
 parser:
   babel-eslint
 
+plugins: [
+  styled-components-config
+]
 settings:
   ecmascript: 6
 

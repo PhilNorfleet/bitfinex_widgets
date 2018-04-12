@@ -1,87 +1,48 @@
-:root {
-  --bgColor: black;
-  --textColor: white;
-  --borderColor: white;
-  --accent: rgb(45, 45, 45);
-}
-.App {
-  background-color: var(--bgColor);
-  color: var(--textColor);
-  min-height: 100vh;
-  display: flex;
-  flex-drection: column;
-}
-.Page {
-  flex: 1;
-}
-.Home {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 350px 1fr;
-  grid-gap: 10px;
-  padding: 10px;
-  font-size: 12px;
-}
-
-.Sidebar {
-  display: flex;
-  flex-direction: column;
-}
-
-.Main {
-
-}
-
-[class^='WidgetWrapper'] {
-  padding: 10px;
-  border: 1px var(--borderColor) solid;
-  margin-bottom: 10px;
-}
-
-.WidgetWrapper-BigTickerContainer {
-}
-
-.WidgetWrapper-TickersContainer {
-  max-height: 500px;
-}
-
-.WidgetWrapper-OrderbookContainer {
+.OrderbookContainer {
   float: left;
   width: 66%;
   min-width: 350px;
 }
 
-.WidgetWrapper-TradesContainer {
+.TradesContainer {
   float: right;
   width: 33%;
   min-width: 200px;
 }
 
-.Widget {
-  display: flex;
-  flex-direction: column;
+.BigTickerContainer {
+  flex: 0 0 auto;
+  order: 0;
 }
-
-.Widget .Header {
-  display: flex;
-}
-
-.Widget .Header .symbol {
-  border-left: 1px var(--borderColor) solid;
-  margin-left: 10px;
-  padding-left: 10px; 
-}
-.Widget .HeaderItem {
-  /* border-bottom: 1px var(--borderColor) solid; */
-}
-.Widget .Body {
-  overflow-y: auto;
-  border-top: 1px var(--borderColor) solid;
-}
-
 
 table {
   width: 100%;
+}
+
+@keyframes flash-up {
+  0% {
+    color: rgb(var(--upColor));
+  }
+  100% {
+    color: default;
+  }
+}
+
+.up {
+  animation: flash-up 2s;
+}
+
+@keyframes flash-down {
+  0% {
+    color: rgb(var(--downColor));
+  }
+  100% {
+    color: default;
+  }
+}
+
+.down {
+  animation: flash-down 2s;
 }
 
 .highlight {
@@ -90,10 +51,6 @@ table {
 
 .no-highlight {
   background: var(--bgColor);
-}
-
-.Tickers {
-  max-height: 325px;
 }
 
 .TickerUnit {
@@ -135,52 +92,10 @@ table {
   text-align: right;
 }
 
-.TableRow {
-}
-
-.TableCell {
-  display: table-cell;
-}
-
-.TableCell .Title {
-  display: flex;
-}
-
-.TableCell .Title .Label {
-  flex: 1 1;
-}
-
-.SortArrows {
-  float: 0 1;
-}
-
-.UpArrow {
-  width: 0; 
-  height: 0; 
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid var(--textColor);
-  position: relative;
-  top: -1px;
-}
-
-.DownArrow {
-  width: 0; 
-  height: 0; 
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid var(--textColor);
-  position: relative;
-  bottom: -1px;
-}
-
 .SortArrows highlighted {
   box-shadow: 0px 0px 5px var(--textColor);
 }
 
-.Orderbook {
-  display: flex;
-}
 .Asks,
 .Bids {
   flex: 50%;
@@ -197,5 +112,11 @@ table {
 .Asks .amount,
 .Bids .price {
   text-align: right;
+}
+
+
+root::-webkit-scrollbar {
+  width: var(--gutterPx);
+  color: 
 }
 

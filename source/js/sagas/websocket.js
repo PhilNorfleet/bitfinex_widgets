@@ -5,7 +5,7 @@ import * as ws from '../actions/websocket';
 import { SELECT_TICKER } from '../actions/app';
 import { tickersSubscribed, tickersUnsubscribed, tickersReceived } from '../actions/tickers';
 import { tradesSubscribed, tradesUnsubscribed, tradesReceived } from '../actions/trades';
-import { bookSubscribed, bookUnsubscribed, bookReceived } from '../actions/book';
+import { ordersSubscribed, ordersUnsubscribed, ordersReceived } from '../actions/orders';
 import { GET_SYMBOLS_START } from '../actions/symbols';
 
 function routeSubscribe(payload) {
@@ -16,20 +16,21 @@ function routeSubscribe(payload) {
     case 'trades':
       return tradesSubscribed({ symbol, chanId });
     case 'book':
-      return bookSubscribed({ symbol, chanId });
+      return ordersSubscribed({ symbol, chanId });
     default:
       return ws.websocketSubscribed(payload);
   }
 }
 
-function routeUnsubscribed(channel) {
+const routeUnsubscribed = (channel) => {
   switch (channel) {
     case 'ticker':
       return tickersUnsubscribed();
     case 'trades':
+      console.log(this.tradesBatch)
       return tradesUnsubscribed();
     case 'book':
-      return bookUnsubscribed();
+      return ordersUnsubscribed();
     default:
       return ws.websocketUnsubscribed();
   }
@@ -53,9 +54,9 @@ function routeMessages(payload, chanIds) {
       case 'book':
         // snapshot
         if (payload[1].length > 10) {
-          return bookReceived(payload[1]);
+          return ordersReceived(payload[1]);
         } else if (payload[1].length === 3) {
-          return bookReceived([payload[1]]);
+          return ordersReceived([payload[1]]);
         }
         break;
       default:
@@ -66,23 +67,35 @@ function routeMessages(payload, chanIds) {
   return ws.websocketMessage(payload);
 }
 
-function createEventChannel(websocket) {
+const createEventChannel = (websocket) => {
   const chanIds = {};
   return eventChannel((emitter) => {
-    let msgs = [];
-    let batch 
+    let tickers = [];
+    let trades = [];
+    let orders = [];
     websocket.onopen = () => {
-      batch = setInterval(() => {
-        if (msgs.length) {
-          emitter(tickersReceived(msgs));
+      this.tickersBatch = setInterval(() => {
+        if (tickers.length) {
+          emitter(tickersReceived(tickers));
         }
-        msgs = [];
+        tickers = [];
+      }, 100);
+      this.tradesBatch = setInterval(() => {
+        if (trades.length) {
+          emitter(tradesReceived(trades));
+        }
+        trades = [];
+      }, 100);
+      this.ordersBatch = setInterval(() => {
+        if (orders.length) {
+          emitter(ordersReceived(orders));
+        }
+        orders = [];
       }, 100);
       emitter(ws.websocketOpen());
       emitter({ type: GET_SYMBOLS_START });
     };
     websocket.onclose = () => {
-      clearInterval(batch);
       return emitter(ws.websocketClose());
     };
     websocket.onerror = (err) => {
@@ -90,30 +103,40 @@ function createEventChannel(websocket) {
     };
     websocket.onmessage = (msg) => {
       const data = JSON.parse(msg.data);
-      let channel;
-      let symbol;
       if (data.event === 'subscribed') {
-        channel = data.channel;
-        symbol = data.symbol;
-        chanIds[data.chanId] = { channel, symbol };
+        chanIds[data.chanId] = data;
         return emitter(routeSubscribe(data));
       } else if (data.event === 'unsubscribed' && data.status === 'OK') {
-        channel = chanIds[data.chanId].channel.slice();
+        const channel = chanIds[data.chanId].channel.slice();
         delete chanIds[data.chanId];
         return emitter(routeUnsubscribed(channel));
       } else if (data[1] !== 'hb' && data.event !== 'info') {
-        channel = chanIds[data[0]] ? chanIds[data[0]].channel : channel;
-        symbol = chanIds[data[0]] ? chanIds[data[0]].symbol : symbol;
-        if (channel === 'ticker') {
-          let ticker = data[1];
-          ticker.push(symbol);
-          msgs.push(ticker);
-        } else {
-          emitter(routeMessages(data, chanIds));
+        if (chanIds[data[0]]) {
+          switch (chanIds[data[0]].channel) {
+            case 'ticker':
+              (data[1]).push(chanIds[data[0]].symbol);
+              tickers.push(data[1]);
+              break;
+            case 'trade':
+              trades.push(data[1])
+              break;
+            case 'book':
+              let newOrders;
+              if (data[1].length > 3) {
+                orders = data[1];
+              } else {
+                orders.push(data[1])
+              }
+              
+              break;
+            default:
+              emitter(routeMessages(data, chanIds));
+          }
         }
       }
     };
     return () => {
+      clearInterval(tickersBatch);
       websocket.close();
     };
   }); 
@@ -141,7 +164,7 @@ function* sendWS(action) {
 function* handleSelectTicker(action) {
   yield sendWS(ws.websocketUnsubscribe(action.payload.tradesChanId));
   yield sendWS(ws.websocketSubscribe('trades', action.payload.symbol));
-  yield sendWS(ws.websocketUnsubscribe(action.payload.bookChanId));
+  yield sendWS(ws.websocketUnsubscribe(action.payload.ordersChanId));
   yield sendWS(ws.websocketSubscribe('book', action.payload.symbol));
 
 }

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import BigTicker from 'components/BigTicker';
 import format from 'utils/formatNumber';
 import Widget from 'components/widget';
+import { css } from 'styled-components';
 import { findIndex } from 'lodash';
 
 @connect(state => ({
@@ -35,15 +36,19 @@ export class BigTickerContainer extends Component {
           low,
           high,
         } = bigTicker;
+        const formatOpts = {
+          price: { precision: 6 },
+          percent: { precision: 3, max: 4, minDecimals: 2 },
+        }
         return (
           <BigTicker
             symbol={ bigTickerSymbol }
-            lastPrice={ format(lastPrice, 8, 8) }
-            volume={ format(volume.toFixed(0), 8, 8) }
-            dailyChange={ format(dailyChange, 8, 8) }
-            dailyChangePerc={ format(100 * dailyChangePerc, 3, 4) }
-            low={ format(low, 8, 8) }
-            high={ format(high, 8, 8) } 
+            lastPrice={ format(lastPrice, formatOpts.price) }
+            volume={ format(volume.toFixed(0)) }
+            dailyChange={ format(dailyChange) }
+            dailyChangePerc={ format(100 * dailyChangePerc, formatOpts.percent) }
+            low={ format(low) }
+            high={ format(high) } 
           />
         );
       }
@@ -53,4 +58,8 @@ export class BigTickerContainer extends Component {
     );
   }
 }
-export default Widget(BigTickerContainer, { header: false });
+const widgetStyle = css`
+  flex: 0 0 auto;
+  order: 0;
+`;
+export default Widget(BigTickerContainer, { header: false, style: widgetStyle });

@@ -1,5 +1,5 @@
 import React from 'react';
-import TableHeader from 'containers/TableHeader';
+import Table from 'components/table/Table';
 import { orderBy } from 'lodash';
 import { format } from 'utils/formatNumber';
 
@@ -31,27 +31,32 @@ const Asks = ({ asks, largestTotalValue }) => {
       totalAmount += amount;
       totalValue += (amount * +ask);
       const perc = 100 * (totalValue / largestTotalValue);
-      const color = 'rgba(256, 0, 0, 0.25)';
+      const color = 'rgba(var(--downColor), 0.25)';
+      const formatOpts = {
+        price: { precision: 6 },
+        totalAmount: { precision: 5, max: 5, minDecimals: 1 },
+        amount: { precision: 5, max: 5, minDecimals: 1 },
+      }
       const style = {
         background: `linear-gradient(90deg, ${ color } ${ perc }%, transparent ${ 0 }%)`,
       };
       return (
-        <tr className='OrderbookRow-Bid' key={ask} style={ style }>
-          <td className='price'>{format(ask, 8, 8, 1)}</td>
-          <td className='totalAmount'>{format(totalAmount, 5, 5, 1)}</td>
-          <td className='amount'>{format(amount, 5, 5, 1)}</td>
+        <tr className='OrderordersRow-Bid' key={ask} style={ style }>
+          <td className='price'>{format(ask, formatOpts.price)}</td>
+          <td className='totalAmount'>{format(totalAmount, formatOpts.totalAmount)}</td>
+          <td className='amount'>{format(amount, formatOpts.amount)}</td>
           <td className='count'>{count}</td>
         </tr>
       )
     })
   }
   return (
-    <table className='Asks'>
-      <TableHeader columns={ columns } parent='Asks' />
-      <tbody>
-        {makeRows()}
-      </tbody>
-    </table>
+    <Table
+      columns={ columns }
+      makeRows={ makeRows }
+      data={ asks }
+      parent='Asks'
+    />
   );
 };
 

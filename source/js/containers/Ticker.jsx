@@ -8,12 +8,12 @@ import format from 'utils/formatNumber';
 
 @connect(state => ({
   tradesChanId: state.trades.tradesChanId,
-  bookChanId: state.book.bookChanId,
+  ordersChanId: state.orders.ordersChanId,
 }))
 export default class TickerContainer extends Component {
   static propTypes = {
     tradesChanId: PropTypes.number,
-    bookChanId: PropTypes.number,
+    ordersChanId: PropTypes.number,
     rowCount: PropTypes.number,
     first: PropTypes.bool,
     dispatch: PropTypes.func,
@@ -21,11 +21,12 @@ export default class TickerContainer extends Component {
   }
   constructor(props) {
     super(props);
-    this.state = { mousedOver: false };
+    this.state = { mousedOver: false, direction: null };
   }
+
   onSelectTicker = (symbol) => {
-    const { dispatch, tradesChanId, bookChanId } = this.props;
-    dispatch(selectTicker(symbol, tradesChanId, bookChanId));
+    const { dispatch, tradesChanId, ordersChanId } = this.props;
+    dispatch(selectTicker(symbol, tradesChanId, ordersChanId));
   }
   onMouseEnterTicker = (symbol) => {
     const { dispatch } = this.props;
@@ -43,15 +44,21 @@ export default class TickerContainer extends Component {
       first,
       ticker,
     } = this.props;
+    const formatOpts = {
+      price: { precision: 7, max: 8 },
+      percent: { precision: 4, max: 4, maxDecimals: 2 },
+      volume: { precision: 10, max: 10, maxDecimals: 0 },
+    }
     return (
       <Ticker
         rowCount={ rowCount }
         first={ first }
         asset={ ticker.asset }
         currency={ ticker.currency }
-        price={ format(ticker.lastPrice, 6, 8) + ticker.currency }
-        delta={ format(100 * ticker.dailyChangePerc, 3, 4, 2) }
-        volume={ format(ticker.volume.toFixed(0), 10, 10) }
+        price={ ticker.lastPrice }
+        direction={ this.state.direction }
+        delta={ format(100 * ticker.dailyChangePerc, formatOpts.percent) }
+        volume={ format(ticker.volume, formatOpts.volume) }
         mousedOver={ this.state.mousedOver }
         onSelectTicker={ this.onSelectTicker }
         onMouseEnterTicker={ this.onMouseEnterTicker }

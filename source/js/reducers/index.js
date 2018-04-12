@@ -4,7 +4,7 @@ import symbols from 'reducers/symbols';
 import websocket from 'reducers/websocket';
 import tickers from 'reducers/tickers';
 import trades from 'reducers/trades';
-import book from 'reducers/book';
+import orders from 'reducers/orders';
 
 export default combineReducers({
   app,
@@ -12,5 +12,5 @@ export default combineReducers({
   websocket,
   tickers,
   trades,
-  book,
+  orders,
 });

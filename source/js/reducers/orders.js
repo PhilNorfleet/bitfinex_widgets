@@ -1,8 +1,8 @@
 import {
-  BOOK_SUBSCRIBED,
-  BOOK_UNSUBSCRIBED,
-  BOOK_RECEIVED,
-} from 'actions/book';
+  ORDERS_SUBSCRIBED,
+  ORDERS_UNSUBSCRIBED,
+  ORDERS_RECEIVED,
+} from 'actions/orders';
 
 const initialState = {
   bids: {},
@@ -10,24 +10,24 @@ const initialState = {
   bidsValue: 0,
   asksValue: 0,
   largestTotalValue: 0,
-  bookChanId: null,
+  ordersChanId: null,
 };
 
 const actionsMap = {
-  [BOOK_SUBSCRIBED]: (state, action) => {
+  [ORDERS_SUBSCRIBED]: (state, action) => {
     const newState = { ...state };
     const { chanId } = { ...action.payload };
-    newState.bookChanId = chanId;
+    newState.ordersChanId = chanId;
     return {
       ...state,
       ...newState,
     };
   },
-  [BOOK_UNSUBSCRIBED]: (state) => {
+  [ORDERS_UNSUBSCRIBED]: (state) => {
     const newState = { ...state };
     newState.bids = {};
     newState.asks = {};
-    newState.bookChanId = null;
+    newState.ordersChanId = null;
     newState.bidsValue = 0;
     newState.asksValue = 0;
     newState.largestTotalValue = 0;
@@ -35,9 +35,9 @@ const actionsMap = {
       ...newState,
     };
   },
-  [BOOK_RECEIVED]: (state, action) => {
+  [ORDERS_RECEIVED]: (state, action) => {
     const newState = {};
-    const newOrders = action.payload.book;
+    const newOrders = action.payload.orders;
     const { bids, asks } = state;
     let { bidsValue, asksValue } = state;
     newOrders.forEach(order => {
@@ -59,10 +59,10 @@ const actionsMap = {
           asksValue += -value;
         }
       } else if (count === 0) {
-        if (amount === 1) {
+        if (amount === 1 && bids[price]) {
           bidsValue -= (bids[price].amount * price);
           delete bids[price];
-        } else if (amount === -1) {
+        } else if (amount === -1 && asks[price]) {
           asksValue -= (asks[price].amount * price);
           delete asks[price];
         }

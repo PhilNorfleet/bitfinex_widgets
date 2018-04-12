@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { changeSortMethod } from 'actions/app';
-import TableHeader from 'components/TableHeader';
+import TableHeader from 'components/table/TableHeader';
 
 @connect(state => ({
     sortMethod: state.app.sortMethod,

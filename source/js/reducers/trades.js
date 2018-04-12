@@ -1,4 +1,4 @@
-import { sortedUniqBy, sortBy, } from 'lodash';
+import { sortedUniqBy, sortBy, maxBy } from 'lodash';
 import {
   TRADES_SUBSCRIBED,
   TRADES_UNSUBSCRIBED,
@@ -7,6 +7,7 @@ import {
 
 const initialState = {
   trades: [],
+  maxAmount: 0,
   tradesChanId: null,
 };
 
@@ -21,8 +22,9 @@ const actionsMap = {
     };
   },
   [TRADES_UNSUBSCRIBED]: (state) => {
-    const newState = { ...state };
+    const newState = {};
     newState.trades = [];
+    newState.maxAmount = 0;
     newState.tradesChanId = null;
     return {
       ...newState,
@@ -30,19 +32,36 @@ const actionsMap = {
   },
   [TRADES_RECEIVED]: (state, action) => {
     const newState = { ...state };
-    let trades = newState.trades;
+    let maxAmount = newState.maxAmount;
     let newTrades = action.payload.trades;
-    // snapshot
-    newTrades.map(trade => {
+    let trades = newState.trades;
+    newTrades.forEach(trade => {
       const [
         timestamp,
         amount,
         price,
       ] = trade.slice(-3);
-      trades.push({ timestamp, amount, price });
+      trades.push({
+        timestamp,
+        amount,
+        price,
+      });
     });
     trades = sortBy(trades, 'timestamp');
-    newState.trades = sortedUniqBy(trades, 'timestamp').slice(-25).reverse();
+    trades = sortedUniqBy(trades, 'timestamp').reverse();
+    const largest = maxBy(trades, (trade) => {
+      const absAmount = Math.abs(trade.amount);
+      return absAmount;
+    });
+    maxAmount = largest ? Math.abs(largest.amount) : 0;
+    trades = trades.reduce((acc, trade) => {
+      const t = { ...trade }
+      t.alpha = Math.abs(t.amount) / maxAmount;
+      acc.push(t);
+      return acc;
+    }, []).slice(0, 25);
+    newState.maxAmount = maxAmount;
+    newState.trades = trades;
     return {
       ...newState,
     };

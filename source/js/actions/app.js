@@ -13,10 +13,10 @@ export function changeSortMethod(type, direction) {
   };
 }
 
-export function selectTicker(symbol, tradesChanId, bookChanId) {
+export function selectTicker(symbol, tradesChanId, ordersChanId) {
   return {
     type: SELECT_TICKER,
-    payload: { symbol, tradesChanId, bookChanId },
+    payload: { symbol, tradesChanId, ordersChanId },
   };
 }
 export function mouseEnterTicker(symbol) {

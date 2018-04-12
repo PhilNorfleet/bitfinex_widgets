@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { orderBy } from 'lodash';
+import { css } from 'styled-components';
 import Tickers from 'components/Tickers';
 import BigTicker from 'components/BigTicker';
 import Widget from 'components/widget';
@@ -46,5 +47,8 @@ const widgetOptions = {
     collapsable: true,
     name: 'TICKERS',
     showSymbol: false,
+    style: css`
+        flex: 0 1 auto;
+    `,
 };
 export default Widget(TickersContainer, widgetOptions);
