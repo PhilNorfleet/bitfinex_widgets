@@ -14,8 +14,8 @@ const Grid = styled.div`
   height: 100%;
   grid-template-columns: 350px 1fr;
   grid-template-rows: repeat(1, 100%);
-  grid-gap: var(--gutterPx);
-  padding: var(--gutterPx);
+  grid-gap: ${ props => props.theme.gutterPx };
+  padding: ${ props => props.theme.gutterPx };
   font-size: 12px;
 `;
 const Sidebar = styled.div`
@@ -25,8 +25,10 @@ const Sidebar = styled.div`
 const Main = styled.div`
 
 `;
-@connect()
-export default class Home extends Component {
+@connect(state => ({
+  theme: state.app.theme,
+}))
+class Home extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
   }
@@ -49,3 +51,5 @@ export default class Home extends Component {
     );
   }
 }
+
+export default Home;

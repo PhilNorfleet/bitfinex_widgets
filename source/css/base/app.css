@@ -1,48 +1,5 @@
-.OrderbookContainer {
-  float: left;
-  width: 66%;
-  min-width: 350px;
-}
-
-.TradesContainer {
-  float: right;
-  width: 33%;
-  min-width: 200px;
-}
-
-.BigTickerContainer {
-  flex: 0 0 auto;
-  order: 0;
-}
-
-table {
+/* table {
   width: 100%;
-}
-
-@keyframes flash-up {
-  0% {
-    color: rgb(var(--upColor));
-  }
-  100% {
-    color: default;
-  }
-}
-
-.up {
-  animation: flash-up 2s;
-}
-
-@keyframes flash-down {
-  0% {
-    color: rgb(var(--downColor));
-  }
-  100% {
-    color: default;
-  }
-}
-
-.down {
-  animation: flash-down 2s;
 }
 
 .highlight {
@@ -118,5 +75,5 @@ table {
 root::-webkit-scrollbar {
   width: var(--gutterPx);
   color: 
-}
+} */
 

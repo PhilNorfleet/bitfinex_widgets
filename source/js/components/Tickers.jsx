@@ -1,6 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
 import Ticker from 'containers/Ticker';
 import Table from 'components/table/Table';
+import Widget from 'components/widget';
+import { css } from 'styled-components';
 import { takeWhile } from 'lodash';
 
 const columns = [
@@ -21,6 +24,9 @@ const columns = [
     key: 'volume',
   },
 ];
+const TickerUnit = styled.tbody`
+  border-bottom: ${ props => props.theme.borderColor} 1px solid;
+`;
 const Tickers = ({ tickers }) => {
   const makeTickers = () => {
     const rows = [];
@@ -39,7 +45,7 @@ const Tickers = ({ tickers }) => {
         }).length;
       }
       const row = (
-        <Ticker 
+        <Ticker
           first={ first }
           rowCount={ rowCount }
           ticker={ tickers[i] }
@@ -49,7 +55,9 @@ const Tickers = ({ tickers }) => {
 
       unit.push(row);
       if (last) {
-        rows.push(unit);
+        rows.push(
+          <TickerUnit key={ tickers[i].symbol }>{ unit }</TickerUnit>
+        );
         unit = [];
         rowCount = 1;
       }
@@ -60,12 +68,20 @@ const Tickers = ({ tickers }) => {
   return (
     <Table 
       columns={ columns }
-      makeRows={ makeTickers }
-      data={ tickers }
+      rows={ makeTickers() }
       sortable
+      compound
       parent='Tickers'
     />
   );
 };
-
-export default Tickers;
+const widgetOptions = {
+  header: true,
+  collapsable: true,
+  name: 'TICKERS',
+  showSymbol: false,
+  style: css`
+        flex: 0 1 auto;
+    `,
+};
+export default Widget(Tickers, widgetOptions);

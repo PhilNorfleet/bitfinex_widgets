@@ -5,13 +5,13 @@ import Header from './Header';
 
 
 const Wrapper = styled.div`
-  padding: var(--gutterPx);
-  border: 1px var(--borderColor) solid;
-  margin-bottom: var(--gutterPx);
+  padding: ${ props => props.theme.gutterPx };
+  border: 1px ${ props => props.theme.borderColor } solid;
+  margin-bottom: ${ props => props.theme.gutterPx };
   display: flex;
   flex-direction: column;
   max-height: 100%;
-  ${ props => props.style }
+  ${ props => props.widgetStyle }
 `;
 const Body = styled.div`
   overflow-y: auto;
@@ -33,7 +33,7 @@ export const WidgetFactory = (WrappedComponent, options) => {
     render() {
       const opts = options || {};
       return (
-        <Wrapper style={ opts.style }>
+        <Wrapper widgetStyle={ opts.style }>
           { opts.header &&
             <Header
               onClick={ opts.collapsable && this.handleHeaderClick }

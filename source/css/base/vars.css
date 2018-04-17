@@ -1,13 +1,13 @@
-:root,
-.App {
+:root {
   /* --font-family-serif: Garamond, "Times New Roman", serif; */
-  --font-family-sans-serif: 'Inconsolata', monospace;
+  --font-family: 'Inconsolata', monospace;
   --gutterPx: 5px;
   
   --bgColor: black;
+  --bgAccent: lighten(var(--bgColor), 20%);
   --textColor: white;
+  --textAccent: darken(var(--textColor), 20%);
   --borderColor: white;
-  --accent: rgb(45, 45, 45);
   --upColor: 50, 256, 50;
   --downColor: 256, 50 , 50;
   --grey-border: #eee;
@@ -16,15 +16,13 @@
   --white: #fff;
 
   --grey1: rgb(12.8, 12.8, 12.8);
-  --grey2: rgb(25.6, 25.6, 25.6);
-  --grey3: rgb(38.4, 38.4, 38.4);
-  --grey4: rgb(51.2, 51.2, 51.2);
-  --grey5: rgb(64, 64, 64);
-  --grey6: rgb(76.8, 76.8, 76.8);
-  --grey7: rgb(89.6, 89.6, 89.6);
-  --grey8: rgb(102.4, 102.4, 102.4);
-  --grey9: rgb(204.8, 204.8, 204.8);
- --grey10: rgb(217.6, 217.6, 217.6);
+  --grey2: rgb(51.2, 51.2, 51.2);
+  --grey3: rgb(64, 64, 64);
+  --grey4: rgb(76.8, 76.8, 76.8);
+  --grey5: rgb(102.4, 102.4, 102.4);
+  --grey6: rgb(128, 128, 128);
+  --grey7: rgb(192, 192, 192);
+  --grey8: rgb(230.4, 230.4, 230.4);
 
 
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import Trade from 'components/Trade';
 import formatNumber from 'utils/formatNumber';
 import Table from 'components/table/Table';
+import Widget from 'components/widget';
+import { css } from 'styled-components';
 import { parse, format } from 'date-fns';
 
 const columns = [
@@ -21,6 +23,7 @@ const columns = [
 const formatOpts = {
   price: { precision: 6 },
   totalAmount: { precision: 5, max: 5, minDecimals: 1 },
+
   amount: { precision: 5, max: 5, minDecimals: 1 },
 }
 const Trades = ({ trades }) => {
@@ -41,11 +44,20 @@ const Trades = ({ trades }) => {
   return (
     <Table
       columns={ columns }
-      makeRows={ makeRows }
-      data={ trades }
+      rows={ makeRows(trades) }
       parent='Trades'
     />
   )
 }
-
-export default Trades;
+const widgetOptions = {
+  header: true,
+  collapsable: true,
+  name: 'TRADES',
+  showSymbol: true,
+  style: css`
+        float: right;
+        width: 33%;
+        min-width: 200px;
+    `,
+};
+export default Widget(Trades, widgetOptions);

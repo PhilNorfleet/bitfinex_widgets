@@ -20,7 +20,8 @@ const UpArrow = styled.div`
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid var(--textColor);
+  border-bottom: 5px solid ${ props => props.theme.textColor };
+  box-shadow: ${ props => props.shadow ? `0px 0px 5px ${ props.theme.textColor }` : 'none' };
   position: relative;
   top: -1px;
 `;
@@ -30,7 +31,8 @@ const DownArrow = styled.div`
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid var(--textColor);
+  border-top: 5px solid ${ props => props.theme.textColor };
+  box-shadow: ${ props => props.shadow ? `0px 0px 5px ${props.theme.textColor}` : 'none' };
   position: relative;
   bottom: -1px;
 `;
@@ -39,10 +41,12 @@ const TableHeader = ({ columns, sortable, sortMethod, handleChangeSortMethod, pa
   return (
     <Header>
       <Row>
-        { columns && 
+        { columns &&
           columns.map(column => {
             return (
-              <Cell key={ parent + column.key }>
+              <Cell
+                key={ parent + column.key }
+                onClick={ () => handleChangeSortMethod(column.key) }>
                 <Title className={ column.key }>
                   <Label>
                     {column.name}
@@ -50,14 +54,18 @@ const TableHeader = ({ columns, sortable, sortMethod, handleChangeSortMethod, pa
                   {sortable &&
                     <SortArrows>
                       <UpArrow
-                        className={ sortMethod === column.key && 'highlighted' }
-                        onClick={ () => handleChangeSortMethod(column.key, 'asc') }
+                        shadow={ 
+                          sortMethod.column === column.key &&
+                          sortMethod.direction === 'asc'
+                        }
                       />
                       <DownArrow
-                        className={sortMethod === column.key && ' highlighted'}
-                        onClick={ () => handleChangeSortMethod(column.key, 'desc') }
+                        shadow={ 
+                          sortMethod.column === column.key &&
+                          sortMethod.direction === 'desc'
+                        }
                       />
-                  </SortArrows>
+                    </SortArrows>
                   }
                 </Title>
               </Cell>

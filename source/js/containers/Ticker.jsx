@@ -5,6 +5,11 @@ import Ticker from 'components/Ticker.jsx';
 import { selectTicker, mouseEnterTicker, mouseLeaveTicker } from 'actions/app';
 import format from 'utils/formatNumber';
 
+const formatOpts = {
+  price: { precision: 7, max: 8 },
+  percent: { precision: 4, max: 4, maxDecimals: 2 },
+  volume: { precision: 10, maxDecimals: 0 },
+}
 
 @connect(state => ({
   tradesChanId: state.trades.tradesChanId,
@@ -19,6 +24,7 @@ export default class TickerContainer extends Component {
     dispatch: PropTypes.func,
     ticker: PropTypes.object,
   }
+
   constructor(props) {
     super(props);
     this.state = { mousedOver: false, direction: null };
@@ -28,27 +34,25 @@ export default class TickerContainer extends Component {
     const { dispatch, tradesChanId, ordersChanId } = this.props;
     dispatch(selectTicker(symbol, tradesChanId, ordersChanId));
   }
+
   onMouseEnterTicker = (symbol) => {
     const { dispatch } = this.props;
     this.setState({ mousedOver: true });
     dispatch(mouseEnterTicker(symbol));
   }
+
   onMouseLeaveTicker = (symbol) => {
     const { dispatch } = this.props;
     this.setState({ mousedOver: false });
     dispatch(mouseLeaveTicker(symbol));
   }
+
   render() {
     const {
       rowCount,
       first,
       ticker,
     } = this.props;
-    const formatOpts = {
-      price: { precision: 7, max: 8 },
-      percent: { precision: 4, max: 4, maxDecimals: 2 },
-      volume: { precision: 10, max: 10, maxDecimals: 0 },
-    }
     return (
       <Ticker
         rowCount={ rowCount }
@@ -62,7 +66,7 @@ export default class TickerContainer extends Component {
         mousedOver={ this.state.mousedOver }
         onSelectTicker={ this.onSelectTicker }
         onMouseEnterTicker={ this.onMouseEnterTicker }
-        onMouseLeaveTicker={ this.onMouseLeaveTicker } 
+        onMouseLeaveTicker={ this.onMouseLeaveTicker }
       />
     );
   }

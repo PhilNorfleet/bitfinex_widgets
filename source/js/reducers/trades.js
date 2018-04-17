@@ -36,15 +36,10 @@ const actionsMap = {
     let newTrades = action.payload.trades;
     let trades = newState.trades;
     newTrades.forEach(trade => {
-      const [
-        timestamp,
-        amount,
-        price,
-      ] = trade.slice(-3);
       trades.push({
-        timestamp,
-        amount,
-        price,
+        timestamp: trade[1],
+        amount: trade[2],
+        price: trade[3],
       });
     });
     trades = sortBy(trades, 'timestamp');

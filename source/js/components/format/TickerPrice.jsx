@@ -1,33 +1,14 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import transition, { css } from 'styled-transition-group';
+import { withTheme } from 'themes';
 import formatNumber from 'utils/formatNumber';
-
-const duration = 1100;
-
-const upColor = 'rgb(var(--upColor))';
-const downColor = 'rgb(var(--downColor))';
-const textColor = 'var(--textColor)';
-// ${ props => (props.direction === 'up' ? upColor : downColor) };
-// ${ textColor };
-const flash = keyframes`
-  0% {
-    color: ${ props => (props.direction === 'up' ? upColor : downColor) };
-  }
-  100% {
-    color: ${ textColor };
-  }
-`;
-
-const Price = styled.span`
-  animation: ${ flash } 2s;
-`;
 
 class TickerPrice extends React.Component {
   state = { direction: null };
-  
-  UNSAFE_componentWillReceiveProps = (nextProps) => {
-    if (this.flashTimeout) clearTimeout(this.flashTimeout);
+  style = {  };
+  componentWillReceiveProps = (nextProps) => {
+    // if (this.flashTimeout) clearTimeout(this.flashTimeout);
     if (nextProps.price !== this.props.price) {
       if (nextProps.price > this.props.price) {
         this.setState({ direction: 'up' });
@@ -38,27 +19,27 @@ class TickerPrice extends React.Component {
     } else if (this.state.direction !== null) {
       this.setState({ direction: null });
     }
-    this.flashTimeout = setTimeout(() => {
-      this.setState({ direction: null });
-    }, 1000);
   }
-
-  UNSAFE_componentWillUnmount = () => {
-    clearTimeout(this.flashTimeout)
-  }
-
+  
   render() {
+
+    const flash = keyframes`
+      0% {
+        color: ${ this.state.direction ? this.props.theme[`${this.state.direction}Color`](1) : this.props.theme.textColor};
+      }
+      100% {
+        color: ${ this.props.theme.textColor};
+      }`;
+
+    const Price = styled.span`animation: ${flash} 2s 1;`;
     return (
-      <span
-        className={ this.state.direction }
-        direction={ this.state.direction }
-      >
+      <Price key={this.props.price} direction={ this.state.direction } theme={ this.props.theme }>
         {formatNumber(this.props.price, {
-          precision: 7,
-          max: 8,
+          precision: 5,
+          minLength: 5,
         })}
-      </span>
+      </Price>
     );
   }
 }
-export default TickerPrice;
+export default withTheme(TickerPrice);

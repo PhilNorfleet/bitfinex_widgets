@@ -121,7 +121,6 @@ const createEventChannel = (websocket) => {
               trades.push(data[1])
               break;
             case 'book':
-              let newOrders;
               if (data[1].length > 3) {
                 orders = data[1];
               } else {

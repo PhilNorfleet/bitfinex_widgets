@@ -1,7 +1,8 @@
 import React from 'react';
+import styled, { css } from 'styled-components';
+import { withTheme } from 'themes';
 import TickerPrice from './format/TickerPrice';
 import PercentChange from './format/PercentChange';
-import styled from 'styled-components';
 // import * as icons from '/assets/img/svg/white';
 // import * as Icons from 'assets/img/svg/icon';
 // const svgs = require.context('../../assets/img/svg/white', true, /\.svg$/)
@@ -10,14 +11,21 @@ import styled from 'styled-components';
 //     images[key] = svgs(key)
 //     return images
 //   }, {});
+const TickerRow = styled.tr`
+  ${ props => props.style }
+`;
 const TickerCell = styled.td`
-  
+  text-align: ${ props => (props.textAlign || 'right')};
+  padding: 2px;
+  ${ props => props.style }
 `;
 const Currency = styled.div`
   float: right;
   margin-left: 5px;
+  width: 25px;
+  text-align: right;
+  color: ${ props => props.theme.textAccent };
 `;
-
 const Ticker = ({ 
   iconName,
   price,
@@ -31,33 +39,37 @@ const Ticker = ({
   mousedOver,
   onSelectTicker,
   onMouseEnterTicker,
-  onMouseLeaveTicker, }) => {
-  const highlight = mousedOver ? 'highlight' : '';
-  const highlightAsset = first && rowCount === 1 ? highlight : 'no-highlight';
+  onMouseLeaveTicker, 
+  theme}) => {
+  const rowStyle = {
+    backgroundColor: (mousedOver ? theme.bgAccent : theme.bgColor),
+  };
+  const assetStyle = {
+    backgroundColor: (first && rowCount === 1 ? 'transparent' : theme.bgColor),
+  };
   return (
     <tr
-      className={ `Ticker ${ highlight }` }
-      onClick={ () => onSelectTicker(asset + currency) }
-      onMouseEnter={ () => onMouseEnterTicker(asset + currency) }
-      onMouseLeave={ () => onMouseLeaveTicker(asset + currency) }
+      style={ rowStyle }
+      onClick={ () => onSelectTicker(`${ asset }${ currency }`) }
+      onMouseEnter={ () => onMouseEnterTicker(`${ asset }${ currency }`) }
+      onMouseLeave={ () => onMouseLeaveTicker(`${ asset }${ currency }`) }
     >
       { first &&
         <TickerCell
-          className={ highlightAsset }
+          style={ assetStyle }
           rowSpan={ rowCount }
         >
-          
           { asset }
         </TickerCell>
       }
-      <TickerCell className='price'>
+      <TickerCell>
         <TickerPrice price={ price } direction={ direction } />
         <Currency>{ currency }</Currency>
       </TickerCell>
-      <TickerCell className='delta'><PercentChange perc={ delta } /></TickerCell>
-      <TickerCell className='volume'>{ volume }</TickerCell>
+      <TickerCell><PercentChange perc={ delta } /></TickerCell>
+      <TickerCell>{ volume }</TickerCell>
     </tr>
   )
 }
 
-export default Ticker;
+export default withTheme(Ticker);

@@ -3,12 +3,11 @@ export const SELECT_TICKER = 'SELECT_TICKER';
 export const MOUSE_ENTER_TICKER = 'MOUSE_ENTER_TICKER';
 export const MOUSE_LEAVE_TICKER = 'MOUSE_LEAVE_TICKER';
 
-export function changeSortMethod(type, direction) {
+export function changeSortMethod(column) {
   return {
     type: CHANGE_SORT_METHOD,
     payload: {
-      type,
-      direction,
+      column,
     },
   };
 }

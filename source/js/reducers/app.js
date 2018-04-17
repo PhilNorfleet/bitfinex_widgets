@@ -4,21 +4,42 @@ import {
   MOUSE_ENTER_TICKER,
   MOUSE_LEAVE_TICKER,
 } from 'actions/app';
+import { changeSortMethod } from '../actions/app';
 
 const initialState = {
-  sortMethod: null,
+  themeName: 'dark1',
+  sortMethod: { type: null, direction: null },
   symbol: null,
   mousedOverSymbol: null,
 };
 
 const actionsMap = {
   [CHANGE_SORT_METHOD]: (state, action) => {
-    const type = action.payload.type;
-    const direction = action.payload.direction;
-
+    let column = action.payload.column;
+    const oldColumn = state.sortMethod.column;
+    const oldDirection = state.sortMethod.direction;
+    let direction;
+    if (column === oldColumn) {
+      switch (oldDirection) {
+        case 'desc':
+          direction = 'asc';
+          break;
+        case 'asc':
+          direction = null;
+          break;
+        default:
+          direction = 'desc';
+      }
+    } else {
+      direction = 'desc';
+    }
+    if (!direction) {
+      column = null;
+    }
+    console.log(column, direction)
     return {
       ...state,
-      sortMethod: { type, direction },
+      sortMethod: { column, direction },
     }
   },
   [SELECT_TICKER]: (state, action) => {

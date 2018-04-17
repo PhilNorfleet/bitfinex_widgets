@@ -1,4 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
+import { rgba } from 'polished';
+import { withTheme } from 'themes';
 import Table from 'components/table/Table';
 import { orderBy } from 'lodash';
 import { format } from 'utils/formatNumber';
@@ -21,7 +24,10 @@ const columns = [
     key: 'count',
   },
 ];
-const Asks = ({ asks, largestTotalValue }) => {
+const Ask = styled.tr`
+  
+`;
+const Asks = ({ asks, largestTotalValue, theme }) => {
   const makeRows = () => {
     const sorted = orderBy(Object.keys(asks), Number, ['asc']);
     let totalAmount = 0;
@@ -31,33 +37,32 @@ const Asks = ({ asks, largestTotalValue }) => {
       totalAmount += amount;
       totalValue += (amount * +ask);
       const perc = 100 * (totalValue / largestTotalValue);
-      const color = 'rgba(var(--downColor), 0.25)';
       const formatOpts = {
         price: { precision: 6 },
         totalAmount: { precision: 5, max: 5, minDecimals: 1 },
         amount: { precision: 5, max: 5, minDecimals: 1 },
       }
+      // can't used styled-components for high-frequency updates.
       const style = {
-        background: `linear-gradient(90deg, ${ color } ${ perc }%, transparent ${ 0 }%)`,
-      };
+        background: `linear-gradient(90deg, ${theme.downColor()} ${perc}%, transparent 0%)`,
+      }
       return (
-        <tr className='OrderordersRow-Bid' key={ask} style={ style }>
-          <td className='price'>{format(ask, formatOpts.price)}</td>
-          <td className='totalAmount'>{format(totalAmount, formatOpts.totalAmount)}</td>
-          <td className='amount'>{format(amount, formatOpts.amount)}</td>
-          <td className='count'>{count}</td>
-        </tr>
+        <Ask key={ ask } style={ style }>
+          <td className='price'>{ format(ask, formatOpts.price) }</td>
+          <td className='totalAmount'>{ format(totalAmount, formatOpts.totalAmount) }</td>
+          <td className='amount'>{ format(amount, formatOpts.amount) }</td>
+          <td className='count'>{ count }</td>
+        </Ask>
       )
     })
   }
   return (
     <Table
       columns={ columns }
-      makeRows={ makeRows }
-      data={ asks }
+      rows={ makeRows(asks) }
       parent='Asks'
     />
   );
 };
 
-export default Asks;
+export default withTheme(Asks);

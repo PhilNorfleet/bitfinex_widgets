@@ -6,13 +6,18 @@ const TableOuter = styled.table`
   width: 100%;
 `;
 const TableBody = styled.tbody``;
-const Table = ({ columns, makeRows, data, sortable }) => {
+const Table = ({ columns, rows, sortable, compound }) => {
   return (
     <TableOuter>
       <TableHeaderContainer columns={ columns } sortable={ sortable } />
-      <TableBody>
-        { makeRows(data) }
-      </TableBody >
+      { !compound  && 
+        <TableBody>
+          { rows }
+        </TableBody >
+      }
+      { compound &&
+        rows
+      }
     </TableOuter>
   );
 }

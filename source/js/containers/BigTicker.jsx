@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import BigTicker from 'components/BigTicker';
 import format from 'utils/formatNumber';
-import Widget from 'components/widget';
-import { css } from 'styled-components';
 import { findIndex } from 'lodash';
 
 @connect(state => ({
@@ -58,8 +56,4 @@ export class BigTickerContainer extends Component {
     );
   }
 }
-const widgetStyle = css`
-  flex: 0 0 auto;
-  order: 0;
-`;
-export default Widget(BigTickerContainer, { header: false, style: widgetStyle });
+export default BigTickerContainer;

@@ -1,8 +1,8 @@
 import { trimEnd } from 'lodash';
 
 function commafy(num) {
-  const result = num.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-  return result;
+  const result = num.slice()
+  return result.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
 }
 export const format = (number, options = {}) => {
   const { 
@@ -19,21 +19,21 @@ export const format = (number, options = {}) => {
   }
   num = (+num).toPrecision(precision);
   const split = num.split('.');
-  const left = commafy(split[0]);
+  const left = split[0];
   let right = split[1] || '';
-  if (right.length < minDecimals) {
+  if (right.length <= minDecimals) {
     right = `${ right }${ '0'.repeat(minDecimals - right.length) }`;
   } else if (right.length > maxDecimals) {
     right = right.slice(0, maxDecimals);
   } else {
     right = right.replace(/^0+(\d)|(\d)0+$/gm, '$1$2');
   }
-  let result = right ? `${ left }.${ right }` : left;
-  if (result.length < minLength) {
+
+  let result = right ? `${ commafy(left) }.${ right }` : commafy(left);
+  const min = Math.max(precision, minLength)
+  if (`${ right }${ left }`.length < min) {
     if (right && right.length < maxDecimals) {
-      result = `${ result }${ '0'.repeat(minLength - result.length) }`;
-    } else {
-      result = `${ '0'.repeat(minLength - result.length) }${ result }`;
+      result = `${result}${'0'.repeat(min - `${right}${left}`.length)}`;
     }
   }
   return result;
